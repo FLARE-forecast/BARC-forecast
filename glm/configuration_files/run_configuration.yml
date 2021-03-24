@@ -1,0 +1,11 @@
+restart_file: .na
+start_day_local: '2020-10-03'
+start_time_local: '00:00:00'
+end_day_local: .na
+forecast_start_day_local: '2020-10-04'
+forecast_horizon: 10
+forecast_project_id: BARCO_forecasts
+sim_name: BARCO_forecasts
+forecast_sss_on: no
+forecast_location: /Users/ryanmcclure/Documents/BARC-forecast/glm
+execute_location: /Users/ryanmcclure/Documents/BARC-forecast/wd
