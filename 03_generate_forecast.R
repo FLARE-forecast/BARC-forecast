@@ -64,7 +64,7 @@ if(length(forecast_files) > 0){
   #Download and process observations (already done)
   
   cleaned_observations_file_long <- file.path(config$qaqc_data_location,"observations_postQAQC_long.csv")
-  observed_met_file <- file.path(config$qaqc_data_location,"observed-met_cram.nc")
+  observed_met_file <- file.path(config$qaqc_data_location,"observed-met_barc.nc")
   
   #Step up Drivers
   
@@ -103,7 +103,8 @@ if(length(forecast_files) > 0){
   
   states_config <- flare::generate_states_to_obs_mapping(states_config, obs_config)
   
-  model_sd <- flare::initiate_model_error(config, states_config, forecast_location)
+  config_file_location <- file.path(config$run_config$forecast_location, "configuration_files")
+  model_sd <- flare::initiate_model_error(config, states_config, config_file_location)
   
   #Set inital conditions
   if(is.na(run_config$restart_file)){
@@ -204,3 +205,7 @@ if(length(forecast_files) > 0){
   yaml::write_yaml(run_config, file = file.path(forecast_location, "configuration_files","run_configuration.yml"))
 }
 
+
+# file <- "/Users/ryanmcclure/Documents/BARC-forecast/wd/output.nc"
+# nc <- nc_open(file)
+# ncvar_get(nc, "temp")

@@ -37,6 +37,9 @@ realtime_temp_location: data
 insitu_obs_fname:
     - temp_data.csv
 
+secchi_fname: 
+    - secchi_data.csv
+
 variable_obsevation_depths: FALSE
 
 focal_depths: .na #1.6
@@ -45,6 +48,7 @@ pull_from_git: FALSE
 
 target_variables:
     - temperature
+    - secchi
 
 averaging_period:
     - "1 hour"
@@ -54,6 +58,7 @@ averaging_period_starting_hour: "00:00:00"
 measurement_methods: 
     temperature:
         - thermistor
+        - secchi
     
 
 

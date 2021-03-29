@@ -12,4 +12,10 @@ in_situ_qaqc <- function(insitu_obs_fname,
                           focal_depths,
                           local_tzone = config$local_tzone,
                           config = config)
-}
+  
+  s <- secchi_qaqc(fname = secchi_fname[1],
+                   input_file_tz = "EST",
+                   local_tzone = config$local_tzone,
+                   focal_depths)
+
+  }

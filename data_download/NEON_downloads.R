@@ -14,6 +14,7 @@ download_neon_files <- function(siteID_neon, products){
         
         # Store the NEON buoy data products
         neonstore::neon_store("TSD_30_min-basic")
+        neonstore::neon_store("dep_secchi-basic")
         
         # Tidy up the met data
         # Airtemp
@@ -84,7 +85,7 @@ download_neon_files <- function(siteID_neon, products){
           full_join(., pressure, by = "time")%>%
           rename(ShortWave = inSWMean, LongWave = inLWMean, AirTemp = tempSingleMean,
                  RelHum = RHMean, WindSpeed = windSpeedMean, Rain = secPrecipBulk, Pressure = staPresMean)%>%
-          mutate(Rain = Rain*0.024)%>%
+          mutate(Rain = Rain/3600)%>%
           mutate(Pressure = Pressure*1000)%>%
           mutate(ShortWave = ifelse(ShortWave<=0,0,ShortWave))%>%
           filter(time >= "2018-08-06")
@@ -101,11 +102,30 @@ download_neon_files <- function(siteID_neon, products){
           rename(value = tsdWaterTempMean)%>%
           rename(timestamp = endDateTime)%>%
           mutate(variable = "temperature",
+                 hour = lubridate::hour(timestamp- 5*3600),
                  method = "thermistor",
                  value = ifelse(is.nan(value), NA, value))%>%
-          select(timestamp, depth, value, variable, method)%>%
+          select(timestamp, hour, depth, value, variable, method)%>%
           mutate(timestamp = timestamp - 5*3600)
         
         write_csv(water_temp, "./data/temp_data.csv")
+        
+        
+        secchi <- neonstore::neon_table(table = "dep_secchi-basic", site = "BARC") %>%
+                select(date, secchiMeanDepth) %>%
+                arrange(date)%>%
+                mutate(hour = lubridate::hour(date- 5*3600))%>%
+                mutate(depth = NA)%>%
+                rename(timestamp = date)%>%
+                rename(value = secchiMeanDepth)%>%
+                mutate(variable = "secchi",
+                       method = "secchi")%>%
+                select(timestamp, hour, depth, value, variable, method)%>%
+                mutate(timestamp = timestamp - 5*3600)
+        
+        kw <- secchi %>% select(value) %>% na.omit(.)%>%
+                summarize(kw = 1.7/mean(value))
+        
+        write_csv(secchi, "./data/secchi_data.csv")
 
 }

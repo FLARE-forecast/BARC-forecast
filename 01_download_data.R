@@ -5,14 +5,14 @@ pacman::p_load(tidyverse, lubridate, VIM, naniar, missMDA, Amelia, mice, FactoMi
 
 remotes::install_github("cboettig/neonstore", force = T)
 remotes::install_github("eco4cast/EFIstandards", force = T)
-#remotes::install_github("FLARE-forecast/flare", force = T)
+remotes::install_github("FLARE-forecast/flare", force = T)
 remotes::install_github("FLARE-forecast/noaaGEFSpoint", force = T)
 
 # Set up the directories
 siteID = "BARC"
 siteID_neon = c("BARC","OSBS")
 lake_directory <- getwd()
-products = c("DP1.00098.001", "DP1.00002.001", "DP1.00023.001", "DP1.00006.001", "DP1.00001.001", "DP1.00004.001","DP1.20264.001")
+products = c("DP1.00098.001", "DP1.00002.001", "DP1.00023.001", "DP1.00006.001", "DP1.00001.001", "DP1.00004.001","DP1.20264.001","DP1.20252.001")
 
 local_directory <- file.path(getwd(), "data", "NOAA_data")
 date = seq(from = Sys.Date()-10, to = Sys.Date()-1, by = "days")
@@ -43,11 +43,13 @@ source(file.path(lake_directory, "data_download/NEON_downloads.R"))
 
 subDir <- "neonstore"
 if (file.exists(file.path(getwd(),"data",subDir))){
+  Sys.setenv("NEONSTORE_DB" = "/Users/ryanmcclure/Documents/BARC-forecast/data/neonstore/")
   Sys.setenv("NEONSTORE_HOME" = "/Users/ryanmcclure/Documents/BARC-forecast/data/neonstore/")
   neonstore::neon_dir()
 } else {
   dir.create(file.path(getwd(),"data",subDir))
   Sys.setenv("NEONSTORE_HOME" = "/Users/ryanmcclure/Documents/BARC-forecast/data/neonstore/")
+  Sys.setenv("NEONSTORE_DB" = "/Users/ryanmcclure/Documents/BARC-forecast/data/neonstore/")
   neonstore::neon_dir()
 }
 
