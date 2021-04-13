@@ -75,15 +75,6 @@ if(length(forecast_files) > 0){
   if(forecast_hour < 10){forecast_hour <- paste0("0",forecast_hour)}
   forecast_path <- file.path(config$data_location, "NOAA_data/noaa/NOAAGEFS_1hr",config$lake_name_code,lubridate::as_date(forecast_start_datetime_UTC),forecast_hour)
   
-  # met_out <- generate_glm_met_files_test(obs_met_file = observed_met_file,
-  #                                          out_dir = config$run_config$execute_location,
-  #                                          forecast_dir = forecast_path,
-  #                                          local_tzone = config$local_tzone,
-  #                                          start_datetime_local = start_datetime_local,
-  #                                          end_datetime_local = end_datetime_local,
-  #                                          forecast_start_datetime = forecast_start_datetime_local,
-  #                                          use_forecasted_met = TRUE)
-  # 
   met_out <- flare::generate_glm_met_files(obs_met_file = observed_met_file,
                                          out_dir = config$run_config$execute_location,
                                          forecast_dir = forecast_path,
@@ -150,25 +141,6 @@ if(length(forecast_files) > 0){
   aux_states_init$lake_depth <- init$lake_depth
   aux_states_init$salt <- init$salt
   
-  # states_init = init$states
-  # pars_init = init$pars
-  # aux_states_init = aux_states_init
-  # obs = obs
-  # obs_sd = obs_config$obs_sd
-  # model_sd = model_sd
-  # working_directory = config$run_config$execute_location
-  # met_file_names = met_file_names
-  # inflow_file_names = NA
-  # outflow_file_names = NA
-  # start_datetime = start_datetime_local
-  # end_datetime = end_datetime_local
-  # forecast_start_datetime = forecast_start_datetime_local
-  # config = config
-  # pars_config = pars_config
-  # states_config = states_config
-  # obs_config = obs_config
-  # management = NULL
-  
   #Run EnKF
   enkf_output <- flare::run_enkf_forecast(states_init = init$states,
                                           pars_init = init$pars,
@@ -212,5 +184,4 @@ if(length(forecast_files) > 0){
   run_config$forecast_start_day_local <- as.character(lubridate::as_date(run_config$forecast_start_day_local) + lubridate::days(1))
   yaml::write_yaml(run_config, file = file.path(forecast_location, "configuration_files","run_configuration.yml"))
 }
-
 

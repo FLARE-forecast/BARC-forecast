@@ -5,7 +5,6 @@ config$qaqc_data_location <- "./qaqc_data"
 
 source(file.path(lake_directory, "data_processing/R/met_qaqc.R"))
 source(file.path(lake_directory, "data_processing/R/temp_qaqc.R"))
-source(file.path(lake_directory, "data_processing/R/secchi_qaqc.R"))
 source(file.path(lake_directory, "data_processing/R/in_situ_qaqc.R"))
 
 if(is.null(config$met_file)){
